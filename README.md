@@ -631,6 +631,7 @@ const CHAR *__stdcall vdr_decrypt_strings_wrap()
   return result;
 }
 ```
+## Rename global vars related to API functions
 
 Next, vidar will use the **GetProcAddress** function to get the addresses of all the APIs it uses during execution. We can write an **IDAPython** script to parse the list of decrypted API functions and perform renaming of global variables.
 
