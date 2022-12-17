@@ -799,3 +799,40 @@ Here are the results:
    [+] Set API name: GdipFree at 0x41b86f
 ```
 
+![comment_API_functions_in_IDA](https://github.com/m4now4r/VidarStealer/blob/main/images/comment_API_functions_in_IDA.PNG)
+
+```c
+FARPROC __stdcall vdr_retrieve_addr_of_kernel32_advapi32_API_funcs()
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS KEYPAD CTRL-"+" TO EXPAND]
+
+  kernel32_dll_hdl = LoadLibraryA(str_kernel32_dll);
+  g_kernel32_dll_hdl = kernel32_dll_hdl;
+  if ( kernel32_dll_hdl )
+  {
+    LoadLibraryA_1 = GetProcAddress(kernel32_dll_hdl, str_LoadLibraryA);
+    GetProcAddress_0 = GetProcAddress(g_kernel32_dll_hdl, str_GetProcAddress);
+    lstrcatA = GetProcAddress_0(g_kernel32_dll_hdl, str_lstrcatA);
+    Sleep_1 = GetProcAddress_0(g_kernel32_dll_hdl, str_Sleep);
+    GetSystemTime = GetProcAddress_0(g_kernel32_dll_hdl, str_GetSystemTime);
+    ExitProcess_1 = GetProcAddress_0(g_kernel32_dll_hdl, str_ExitProcess);
+    GetCurrentProcess_1 = GetProcAddress_0(g_kernel32_dll_hdl, str_GetCurrentProcess);
+    VirtualAllocExNuma = GetProcAddress_0(g_kernel32_dll_hdl, str_VirtualAllocExNuma);
+    VirtualAlloc = GetProcAddress_0(g_kernel32_dll_hdl, str_VirtualAlloc);
+    VirtualFree = GetProcAddress_0(g_kernel32_dll_hdl, str_VirtualFree);
+    *lstrcmpiW = GetProcAddress_0(g_kernel32_dll_hdl, str_lstrcmpiW);
+    LocalAlloc_1 = GetProcAddress_0(g_kernel32_dll_hdl, str_LocalAlloc);
+    GetComputerNameA = GetProcAddress_0(g_kernel32_dll_hdl, str_GetComputerNameA);
+  }
+  result = LoadLibraryA_1(str_advapi32_dll);
+  g_advapi32_dll_hdl = result;
+  if ( !result )
+  {
+    return result;
+  }
+  result = GetProcAddress_0(result, str_GetUserNameA);
+  GetUserNameA_1 = result;
+  return result;
+```
+
+
