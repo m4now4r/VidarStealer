@@ -601,4 +601,201 @@ List of all decoded strings:
    [+] Decrypted string: Ledger Live at 0x40414a
 ```
 
+![comment_decrypted_strings_in_IDA](https://github.com/m4now4r/VidarStealer/blob/main/images/comment_decrypted_strings_in_IDA.PNG)
+
+The global variables are renamed corresponding to the decoded strings as follows:
+```c
+const CHAR *__stdcall vdr_decrypt_strings_wrap()
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS KEYPAD CTRL-"+" TO EXPAND]
+
+  str_HAL9TH = vdr_decrypt_strings(6u, (char *)&xor_key, "MNLNPK");
+  str_JohnDoe = vdr_decrypt_strings(7u, byte_43802C, "YPFTTRV");
+  str_LoadLibraryA = vdr_decrypt_strings(0xCu, str_Y1903, "G6MUFPYIQNJQ");
+  str_lstrcatA = vdr_decrypt_strings(8u, ".=%053Ls", "BNQBVR82");
+  str_GetProcAddress = vdr_decrypt_strings(0xEu, byte_43807C, "DPKUO540BD4R2J");
+  str_Sleep = vdr_decrypt_strings(5u, byte_438094, "RMPZX");
+  str_GetSystemTime = vdr_decrypt_strings(0xDu, byte_4380AC, "U6869B6N6IOTC");
+  str_ExitProcess = vdr_decrypt_strings(0xBu, byte_4380C8, "VZS0W2FKU7H");
+  str_GetCurrentProcess = vdr_decrypt_strings(0x11u, str_6F, "MS2Y26EV53O6FTKSR");
+  str_VirtualAllocExNuma = vdr_decrypt_strings(0x12u, byte_438110, "R8SXT26D010WUN981T");
+  str_VirtualAlloc = vdr_decrypt_strings(0xCu, str_4, "QJIVAD2YIH2N");
+  str_VirtualFree = vdr_decrypt_strings(0xBu, byte_438150, "HLKX3WPT306");
+  str_lstrcmpiW = vdr_decrypt_strings(9u, ":11<[!!9o", "VBEN8LQP8");
+  str_LocalAlloc = vdr_decrypt_strings(0xAu, byte_438180, "N93IJ58O45");
+  str_GetComputerNameA = vdr_decrypt_strings(0x10u, byte_4381A0, "UYKNTPM7TMTH00NX");
+  str_advapi32_dll = vdr_decrypt_strings(0xCu, str_5QFUX, "T504N1249IRB");
+  str_GetUserNameA = vdr_decrypt_strings(0xCu, str_R, "N7XAZ7FHKXV8");
+  result = vdr_decrypt_strings(0xCu, "=+D-**zq\x1B3 (", "VN6COFIC5WLD");// kernel32.dll
+  str_kernel32_dll = result;
+  return result;
+}
+```
+
+Next, vidar will use the **GetProcAddress** function to get the addresses of all the APIs it uses during execution. We can write an **IDAPython** script to parse the list of decrypted API functions and perform renaming of global variables.
+
+Here are the results:
+```c
+[*] Trying to rename global var to API function name:
+   [+] Set API name: NSS_Init at 0x414ae3
+   [+] Set API name: NSS_Shutdown at 0x414afa
+   [+] Set API name: PK11_GetInternalKeySlot at 0x414b11
+   [+] Set API name: PK11_FreeSlot at 0x414b28
+   [+] Set API name: PK11_Authenticate at 0x414b3f
+   [+] Set API name: PK11SDR_Decrypt at 0x414b56
+   [+] Set API name: PK11SDR_Decrypt at 0x41a9b3
+   [+] Set API name: PK11SDR_Decrypt at 0x41a9b3
+   [+] Set API name: Sleep at 0x41a9d1
+   [+] Set API name: GetSystemTime at 0x41a9e8
+   [+] Set API name: ExitProcess at 0x41a9ff
+   [+] Set API name: GetCurrentProcess at 0x41aa16
+   [+] Set API name: VirtualAllocExNuma at 0x41aa2d
+   [+] Set API name: VirtualAlloc at 0x41aa44
+   [+] Set API name: VirtualFree at 0x41aa5b
+   [+] Set API name: lstrcmpiW at 0x41aa72
+   [+] Set API name: LocalAlloc at 0x41aa89
+   [+] Set API name: GetComputerNameA at 0x41aaa0
+   [+] Set API name: GetComputerNameA at 0x41aaa0
+   [+] Set API name: GetUserNameA at 0x41aac8
+   [+] Set API name: CreateThread at 0x41aaeb
+   [+] Set API name: GlobalMemoryStatusEx at 0x41ab02
+   [+] Set API name: IsWow64Process at 0x41ab19
+   [+] Set API name: GetUserDefaultLocaleName at 0x41ab30
+   [+] Set API name: GetSystemInfo at 0x41ab47
+   [+] Set API name: WideCharToMultiByte at 0x41ab5e
+   [+] Set API name: LocalFree at 0x41ab75
+   [+] Set API name: HeapAlloc at 0x41ab8c
+   [+] Set API name: GetProcessHeap at 0x41aba3
+   [+] Set API name: CreateFileA at 0x41abba
+   [+] Set API name: GetFileSize at 0x41abd1
+   [+] Set API name: ReadFile at 0x41abe8
+   [+] Set API name: CloseHandle at 0x41abff
+   [+] Set API name: GetLogicalDriveStringsA at 0x41ac16
+   [+] Set API name: lstrlenA at 0x41ac2d
+   [+] Set API name: GetDriveTypeA at 0x41ac44
+   [+] Set API name: lstrcpyA at 0x41ac5b
+   [+] Set API name: MultiByteToWideChar at 0x41ac72
+   [+] Set API name: FindFirstFileA at 0x41ac89
+   [+] Set API name: FindNextFileA at 0x41aca0
+   [+] Set API name: FindClose at 0x41acb7
+   [+] Set API name: GetLastError at 0x41acce
+   [+] Set API name: lstrcpynA at 0x41ace5
+   [+] Set API name: GlobalLock at 0x41acfc
+   [+] Set API name: GlobalSize at 0x41ad13
+   [+] Set API name: FreeLibrary at 0x41ad2a
+   [+] Set API name: GetLocaleInfoA at 0x41ad41
+   [+] Set API name: GetCurrentProcessId at 0x41ad58
+   [+] Set API name: OpenProcess at 0x41ad6f
+   [+] Set API name: GetFileSizeEx at 0x41ad86
+   [+] Set API name: GetTimeZoneInformation at 0x41ad9d
+   [+] Set API name: TzSpecificLocalTimeToSystemTime at 0x41adb4
+   [+] Set API name: CopyFileA at 0x41adcb
+   [+] Set API name: DeleteFileA at 0x41ade2
+   [+] Set API name: GetCurrentDirectoryA at 0x41adf9
+   [+] Set API name: SetFilePointer at 0x41ae10
+   [+] Set API name: HeapFree at 0x41ae27
+   [+] Set API name: SystemTimeToFileTime at 0x41ae3e
+   [+] Set API name: GetLocalTime at 0x41ae55
+   [+] Set API name: SetFileTime at 0x41ae6c
+   [+] Set API name: WriteFile at 0x41ae83
+   [+] Set API name: GetFileAttributesA at 0x41ae9a
+   [+] Set API name: GetFileAttributesW at 0x41aeb1
+   [+] Set API name: LocalFileTimeToFileTime at 0x41aec8
+   [+] Set API name: MapViewOfFile at 0x41aedf
+   [+] Set API name: UnmapViewOfFile at 0x41aef6
+   [+] Set API name: FileTimeToSystemTime at 0x41af0d
+   [+] Set API name: CreateFileMappingA at 0x41af24
+   [+] Set API name: GetFileInformationByHandle at 0x41af3b
+   [+] Set API name: GetEnvironmentVariableA at 0x41af52
+   [+] Set API name: SetEnvironmentVariableA at 0x41af69
+   [+] Set API name: GetTickCount at 0x41af80
+   [+] Set API name: OpenEventA at 0x41af97
+   [+] Set API name: CreateEventA at 0x41afae
+   [+] Set API name: CreateToolhelp32Snapshot at 0x41afc5
+   [+] Set API name: Process32First at 0x41afdc
+   [+] Set API name: Process32Next at 0x41aff3
+   [+] Set API name: GetWindowsDirectoryA at 0x41b00a
+   [+] Set API name: GetVolumeInformationA at 0x41b021
+   [+] Set API name: BCryptCloseAlgorithmProvider at 0x41b0fb
+   [+] Set API name: BCryptDestroyKey at 0x41b112
+   [+] Set API name: BCryptOpenAlgorithmProvider at 0x41b129
+   [+] Set API name: BCryptSetProperty at 0x41b140
+   [+] Set API name: BCryptGenerateSymmetricKey at 0x41b157
+   [+] Set API name: BCryptDecrypt at 0x41b16e
+   [+] Set API name: CryptUnprotectData at 0x41b189
+   [+] Set API name: CryptBinaryToStringA at 0x41b1a0
+   [+] Set API name: CryptStringToBinaryA at 0x41b1b7
+   [+] Set API name: RegOpenKeyExA at 0x41b1d6
+   [+] Set API name: RegQueryValueExA at 0x41b1ed
+   [+] Set API name: RegCloseKey at 0x41b204
+   [+] Set API name: RegOpenKeyExW at 0x41b21b
+   [+] Set API name: RegGetValueW at 0x41b232
+   [+] Set API name: RegEnumKeyExA at 0x41b249
+   [+] Set API name: RegGetValueA at 0x41b260
+   [+] Set API name: GetUserNameA at 0x41b277
+   [+] Set API name: GetCurrentHwProfileA at 0x41b28e
+   [+] Set API name: RegEnumValueA at 0x41b2a5
+   [+] Set API name: GetFileSecurityA at 0x41b2bc
+   [+] Set API name: OpenProcessToken at 0x41b2d3
+   [+] Set API name: DuplicateToken at 0x41b2ea
+   [+] Set API name: MapGenericMask at 0x41b301
+   [+] Set API name: AccessCheck at 0x41b318
+   [+] Set API name: InternetCloseHandle at 0x41b337
+   [+] Set API name: InternetReadFile at 0x41b34e
+   [+] Set API name: HttpSendRequestA at 0x41b365
+   [+] Set API name: HttpOpenRequestA at 0x41b37c
+   [+] Set API name: InternetConnectA at 0x41b393
+   [+] Set API name: InternetOpenA at 0x41b3aa
+   [+] Set API name: HttpAddRequestHeadersA at 0x41b3c1
+   [+] Set API name: HttpQueryInfoA at 0x41b3d8
+   [+] Set API name: InternetSetFilePointer at 0x41b3ef
+   [+] Set API name: InternetOpenUrlA at 0x41b406
+   [+] Set API name: InternetSetOptionA at 0x41b41d
+   [+] Set API name: DeleteUrlCacheEntry at 0x41b434
+   [+] Set API name: InternetCrackUrlA at 0x41b44b
+   [+] Set API name: CreateCompatibleBitmap at 0x41b46a
+   [+] Set API name: SelectObject at 0x41b481
+   [+] Set API name: BitBlt at 0x41b498
+   [+] Set API name: DeleteObject at 0x41b4af
+   [+] Set API name: CreateDCA at 0x41b4c6
+   [+] Set API name: GetDeviceCaps at 0x41b4dd
+   [+] Set API name: CreateCompatibleDC at 0x41b4f4
+   [+] Set API name: CoCreateInstance at 0x41b50f
+   [+] Set API name: CoUninitialize at 0x41b526
+   [+] Set API name: CoInitialize at 0x41b53d
+   [+] Set API name: CreateStreamOnHGlobal at 0x41b554
+   [+] Set API name: GetHGlobalFromStream at 0x41b56b
+   [+] Set API name: GetDesktopWindow at 0x41b58a
+   [+] Set API name: ReleaseDC at 0x41b5a1
+   [+] Set API name: GetKeyboardLayoutList at 0x41b5b8
+   [+] Set API name: CharToOemA at 0x41b5cf
+   [+] Set API name: GetDC at 0x41b5e6
+   [+] Set API name: wsprintfA at 0x41b5fd
+   [+] Set API name: EnumDisplayDevicesA at 0x41b614
+   [+] Set API name: GetSystemMetrics at 0x41b62b
+   [+] Set API name: GetWindowRect at 0x41b642
+   [+] Set API name: GetWindowDC at 0x41b659
+   [+] Set API name: CloseWindow at 0x41b670
+   [+] Set API name: GetModuleFileNameExA at 0x41b68b
+   [+] Set API name: GetModuleBaseNameA at 0x41b6a2
+   [+] Set API name: EnumProcessModules at 0x41b6b9
+   [+] Set API name: ShellExecuteExA at 0x41b6d4
+   [+] Set API name: SHFileOperationA at 0x41b6eb
+   [+] Set API name: SHGetFolderPathA at 0x41b702
+   [+] Set API name: PathMatchSpecW at 0x41b721
+   [+] Set API name: PathMatchSpecA at 0x41b738
+   [+] Set API name: StrCmpCA at 0x41b74f
+   [+] Set API name: StrCmpCW at 0x41b766
+   [+] Set API name: StrStrA at 0x41b77d
+   [+] Set API name: PathFindFileNameA at 0x41b794
+   [+] Set API name: SymMatchString at 0x41b7af
+   [+] Set API name: GdipGetImageEncodersSize at 0x41b7ce
+   [+] Set API name: GdipGetImageEncoders at 0x41b7e5
+   [+] Set API name: GdipCreateBitmapFromHBITMAP at 0x41b7fc
+   [+] Set API name: GdiplusStartup at 0x41b813
+   [+] Set API name: GdiplusShutdown at 0x41b82a
+   [+] Set API name: GdipSaveImageToStream at 0x41b841
+   [+] Set API name: GdipDisposeImage at 0x41b858
+   [+] Set API name: GdipFree at 0x41b86f
+```
 
